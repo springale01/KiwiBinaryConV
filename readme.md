@@ -1,4 +1,4 @@
-# KiwiBinaryC
+# KiwiBinaryC - CLI Base Converter
 
 A Simple Binary CLI converter
 
