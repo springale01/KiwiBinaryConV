@@ -1,0 +1,9 @@
+[package]
+name = "binaryconverter"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.57", features = ["derive"] }
+owo-colors = "4.2.3"
+thiserror = { workspace = true }
