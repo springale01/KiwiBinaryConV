@@ -72,21 +72,20 @@ impl<'a> BinaryConverter<'a> {
                 self.output = Self::convert(self.number, 8, Base::Octal);
                 Ok(())
             }
-            _ => Err(ConverterError::FailedToConvert),
         }
     }
 
     fn convert(starting_number: usize, divisor: usize, base: Base) -> VecDeque<Cow<'a, str>> {
         // limit
         let mut count: u32 = 0;
-        let (mut current_number, mut remainder): (usize, usize) = (starting_number, 0);
+        let (mut current_number, _remainder): (usize, usize) = (starting_number, 0);
         let mut buffer: VecDeque<Cow<'_, str>> = VecDeque::with_capacity(8);
         let map: &[&str] = match base {
             Base::Binary => &Self::BIN_MAP,
             Base::Octal => &Self::OCTO_MAP,
             Base::Hex => &Self::HEX_MAP,
         };
-        'main_loop: loop {
+        '_main_loop: loop {
             let calculated = current_number / divisor;
             let remainder = current_number % divisor;
             buffer.push_front(Cow::Borrowed({
@@ -187,10 +186,11 @@ impl<'a> std::fmt::Display for BinaryConverter<'a> {
             .join("");
         writeln!(
             f,
-            "Base: [{}] with input number [{}]\nOutput: {}",
+            "Base: [{}] with input number [{}]\nOutput: {} in [{}]",
             self.base.bright_green().bold(),
             self.number.cyan().bold(),
-            thing.bold().bright_yellow().underline()
+            thing.bold().bright_yellow().underline(),
+            self.base.bright_blue().bold()
         )?;
 
         Ok(())

@@ -9,7 +9,7 @@ pub struct ClapOptions {
     #[arg(long, short)]
     pub base: String,
 
-    #[arg(long, conflicts_with = "code")]
+    #[arg(long, short, conflicts_with = "code")]
     pub number: Option<usize>,
 
     #[arg(short, long, conflicts_with = "number")]
@@ -17,6 +17,9 @@ pub struct ClapOptions {
 
     #[arg(long, short, requires = "code")]
     pub target: Option<String>,
+
+    #[arg(long, short = 'x')]
+    pub no_prefix: bool,
 }
 
 /*

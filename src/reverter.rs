@@ -44,7 +44,8 @@ impl<'a> BinaryConverter<'a> {
         Ok(())
     }
     /// ~~Don't use this it's very cursed~~
-    fn revert(&mut self) -> Result<(), ConverterError> {
+    #[allow(unused)]
+    fn _revert(&mut self) -> Result<(), ConverterError> {
         // GOAL: turn hex/bin/others back to normal digets
         if !self.check_if_base_and_output_is_coherent() {
             return Err(ConverterError::NumberAndBaseNotCoherent);
@@ -101,10 +102,11 @@ impl<'a> BinaryConverter<'a> {
     }
     pub fn reverse_print(&self, code: &str) -> Cow<'_, str> {
         let thing = Cow::Owned(format!(
-            "Base: [{}] with input code [{}]\nOutput: {}",
+            "Base: [{}] with input code [{}]\nOutput: {} in [{}]",
             self.base().bold().bright_green(),
             code.bold().bright_cyan(),
-            self.number().bold().yellow()
+            self.number().bold().yellow().underline(),
+            "Base 10".bright_blue()
         ));
         thing
     }
