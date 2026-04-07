@@ -27,13 +27,10 @@ fn main() -> Result<(), ConverterError> {
 fn bougie_main() -> Result<(), ConverterError> {
     let args = ClapOptions::parse();
     let base = Base::deserialize(&args.base)?;
-    let shared_code = if let Some(code) = args.code {
-        Some(Rc::new(code))
-    } else {
-        None
-    };
+
     let mut converter = BinaryConverter::with_base(base.clone());
-    if let (Some(target), Some(code)) = (args.target.as_deref(), shared_code.as_deref()) {
+    if let (Some(target), Some(code)) = (args.target.as_deref(), args.code.as_deref()) {
+        let code = code.to_ascii_uppercase();
         let target_base = Base::deserialize(&target)?;
         converter.load_code(&code)?;
         let out = converter.to_target(target_base.clone())?;
@@ -47,7 +44,7 @@ fn bougie_main() -> Result<(), ConverterError> {
     }
     // matches number and shared code so if one of them is there we do the appropite function
     // both true is solved by mutally exculsive or smt in clap options
-    match (args.number, shared_code) {
+    match (args.number, args.code.as_deref()) {
         (Some(number), None) => {
             converter.load_number(number);
             converter.calculate()?;
@@ -59,6 +56,7 @@ fn bougie_main() -> Result<(), ConverterError> {
             }
         }
         (None, Some(code)) => {
+            let code = code.to_ascii_uppercase();
             converter.load_code(&code)?;
             converter.revert_v2()?;
             println!("{}", converter.reverse_print(&code));
